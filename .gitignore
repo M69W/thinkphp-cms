@@ -1,0 +1,5 @@
+.DS_Store
+/ThinkPHP/
+/Application/Runtime/Cache/
+/Application/Runtime/Logs/
+/index.html
