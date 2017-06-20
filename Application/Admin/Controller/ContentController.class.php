@@ -64,7 +64,7 @@ class ContentController extends CommonController {
         $newsId = D("News")->insert($_POST);
         if ($newsId) {
           $newsContentData['content'] = $_POST['content'];
-          $newsContentData['newsId'] = $newsId;
+          $newsContentData['news_id'] = $newsId;
           $cId = D("NewsContent")->insert($newsContentData);
           if ($cId) {
             return show(1,'新增成功');
