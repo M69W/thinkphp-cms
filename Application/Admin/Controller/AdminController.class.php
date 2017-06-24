@@ -71,6 +71,37 @@ class AdminController extends CommonController {
         $this->display();
     }
 
+    public function editPassword() {
+        $res = $this->getLoginUser();
+        $user = D("Admin")->getAdminByAdminId($res['admin_id']);
+        $this->assign('vo',$user);
+        $this->display("edit-password");
+    }
+
+    public function newPassword() {
+      $admin_id = $_POST['admin_id'];
+      $oldpassword = $_POST['oldpassword'];
+      $newpassword = $_POST['newpassword'];
+      if (!$oldpassword || !$newpassword) {
+        return show(0,'请输入正确信息');
+      }
+      $ret = D('Admin')->getAdminByAdminId($admin_id);
+      if ($ret['password'] != getMd5Password($oldpassword)) {
+        return show(0,"旧密码错误");
+      }
+      $data['password'] = getMd5Password($newpassword);
+      try {
+          $id = D("Admin")->updateByAdminId($admin_id, $data);
+          if($id === false) {
+              return show(0, '修改失败');
+          }
+          session('adminUser',null);
+          return show(1, '修改成功');
+      }catch(Exception $e) {
+          return show(0, $e->getMessage());
+      }
+    }
+
     public function save() {
         $user = $this->getLoginUser();
         if(!$user) {
